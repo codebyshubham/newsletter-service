@@ -1,23 +1,12 @@
-use actix_web::{
-    web,
-    App,
-    HttpRequest,
-    HttpServer,
-    Responder
-};
-
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("world");
-
-    format!("Hello, {}!", &name)
-}
+use std::net::TcpListener;
+use newsletter_service::run;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(greet))
-            .route("/{name}", web::get().to(greet))
-    })
-    .bind("127.0.0.1:8080")?.run().await
+    let listener = TcpListener::bind("127.0.0.1:8080")
+        .expect("Failed to bind at random port");
+
+    println!("Server is running on 127.0.0.1:{}", listener.local_addr().unwrap().port());
+
+    run(listener)?.await
 }

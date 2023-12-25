@@ -2,6 +2,24 @@
 name = "newsletter-service"
 version = "0.1.0"
 edition = "2021"
+authors = ["Shubham Patel <shubhampatel518@gmail.com>"]
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "newsletter-service"
 
 [dependencies]
+actix-rt = "2.9.0"
 actix-web = "4.0.0"
+# We need the optional `derive` feature to use `serde`'s procedural macros:
+# `#[derive(Serialize)]` and `#[derive(Deserialize)]`.
+# The feature is not enabled by default to avoid pulling in
+# unnecessary dependencies for projects that do not need it.
+serde = { version = "1", features = ["derive"]}
+
+[dev-dependencies]
+reqwest = "0.11.22"
+tokio = "1.35.0"
